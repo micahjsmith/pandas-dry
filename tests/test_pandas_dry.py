@@ -3,23 +3,23 @@
 
 """Tests for `pandas_dry` package."""
 
-import pytest
+import numpy as np
+import unittest
 
+from pandas_dry import pipes
 
-from pandas_dry import pandas_dry
+class TestPipes(unittest.testCase):
+    def setUp(self):
+        pass
 
+    def test_null_counts(self):
+        n = 27
+        m = 41
+        nulls = [np.nan] * n
+        nonnulls = np.randon.rand(m)
+        data = np.concatenate(nulls, nonnulls)
+        ser = pd.Series(data=data)
+        null_counts = ser.pipe(pipes.null_counts)
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
-
-
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument."""
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+        self.assertEqual(n, null_counts['Null'])
+        self.assertEqual(m, null_counts['Not Null'])
