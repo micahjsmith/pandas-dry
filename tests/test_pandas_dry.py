@@ -4,11 +4,12 @@
 """Tests for `pandas_dry` package."""
 
 import numpy as np
+import pandas as pd
 import unittest
 
 from pandas_dry import pipes
 
-class TestPipes(unittest.testCase):
+class TestPipes(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -16,8 +17,8 @@ class TestPipes(unittest.testCase):
         n = 27
         m = 41
         nulls = [np.nan] * n
-        nonnulls = np.randon.rand(m)
-        data = np.concatenate(nulls, nonnulls)
+        nonnulls = np.random.rand(m)
+        data = np.concatenate((nulls, nonnulls))
         ser = pd.Series(data=data)
         null_counts = ser.pipe(pipes.null_counts)
 
