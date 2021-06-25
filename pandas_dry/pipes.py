@@ -2,14 +2,20 @@ import pandas as pd
 
 from pandas_dry._utils import flatten_strings
 
-def move_column(df, name, position=0):
+def move_column(df, name, index=0, before=None, after=None):
     if name not in df.columns:
-        raise ValueError("Column '{}' not in DataFrame".format(name))
+        raise ValueError(f'Column {name!r} not in DataFrame')
 
     df = df.copy()
     col = df[name]
     del df[name]
-    df.insert(position, name, col)
+
+    if before is not None:
+        index = list(df.columns).index(before)
+    elif after is not None:
+        index = list(df.columns).index(after) + 1
+
+    df.insert(index, name, col)
     return df
 
 def flatten_multiindex(df, sep, axis=1):
